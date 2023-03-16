@@ -1,0 +1,26 @@
+version: "3.9"
+name: "oauth-server"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    volumes:
+      - ./:/usr/src/app
+    depends_on:
+      - mongo
+    command: air
+
+  mongo:
+    image: registry.thinknet.co.th/sredev/mongo:5.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=homestead
+      - MONGO_INITDB_ROOT_PASSWORD=secret
