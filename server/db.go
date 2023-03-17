@@ -23,13 +23,11 @@ func ConnectDB() {
 	}
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(env["DB_URL"]).SetAuth(credential))
 	if err != nil {
-		println("3333")
 		log.Fatal(err)
 	}
 
 	err = client.Ping(ctx, readpref.Primary())
 	if err != nil {
-		println("4444")
 		log.Fatal(err)
 	}
 }

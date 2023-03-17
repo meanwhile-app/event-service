@@ -7,7 +7,7 @@ import (
 
 func main() {
 	configs.LoadEnv()
-	// server.ConnectDB()
+	server.ConnectDB()
 	server.InitRoute()
 	server.Run()
 }
