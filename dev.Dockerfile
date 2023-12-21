@@ -1,4 +1,4 @@
-FROM golang:1.20.2-alpine
+FROM golang:1.21.5-alpine
 
 # Install air for live-reloading
 RUN go install github.com/cosmtrek/air@latest
