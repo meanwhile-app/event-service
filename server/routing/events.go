@@ -12,6 +12,7 @@ func InitUserRoute(routerGroup *gin.RouterGroup) {
 	eventGroup := routerGroup.Group("/events", middewares.Authorize())
 	{
 		eventGroup.GET("/", ctrl.GetEvents)
+		eventGroup.POST("/", ctrl.InsertEvent)
 		eventGroup.GET("/nearby", ctrl.GetNearbyEvents)
 	}
 }
