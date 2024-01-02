@@ -3,6 +3,7 @@ package models
 import (
 	"context"
 	"os"
+	"strconv"
 
 	"github.com/nuntjw/go-gin-starter/database"
 	"github.com/nuntjw/go-gin-starter/models/schemas"
@@ -20,12 +21,46 @@ func NewEventModel() *EventModel {
 	}
 }
 
-func (eventModel *EventModel) GetEvents() ([]schemas.Event, error) {
-	events := []schemas.Event{}
-	cursor, err := eventModel.Coll.Find(context.TODO(), bson.M{})
+func (eventModel *EventModel) GetEvents(filter bson.M) ([]schemas.Event, error) {
+	cursor, err := eventModel.Coll.Find(context.TODO(), filter)
 	if err != nil {
 		return nil, err
 	}
+	return eventModel.mapCursorToEvents(cursor)
+}
+
+func (eventModel *EventModel) GetNearbyEvents(location []string) ([]schemas.Event, error) {
+	lat, err := strconv.ParseFloat(location[0], 64)
+	if err != nil {
+		return nil, err
+	}
+
+	lng, err := strconv.ParseFloat(location[1], 64)
+	if err != nil {
+		return nil, err
+	}
+
+	filter := bson.M{
+		"location": bson.M{
+			"$nearSphere": bson.M{
+				"$geometry": bson.M{
+					"type":        "Point",
+					"coordinates": bson.A{lat, lng},
+				},
+				"$maxDistance": 100,
+			},
+		},
+	}
+
+	cursor, err := eventModel.Coll.Find(context.TODO(), filter)
+	if err != nil {
+		return nil, err
+	}
+	return eventModel.mapCursorToEvents(cursor)
+}
+
+func (eventModel *EventModel) mapCursorToEvents(cursor *mongo.Cursor) ([]schemas.Event, error) {
+	events := []schemas.Event{}
 	defer cursor.Close(context.TODO())
 
 	for cursor.Next((context.TODO())) {
