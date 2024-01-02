@@ -6,10 +6,10 @@ import (
 )
 
 func InitUserRoute(routerGroup *gin.RouterGroup) {
-	user := controllers.NewUserController()
+	ctrl := controllers.NewEventController()
 
-	userGroup := routerGroup.Group("/users")
+	userGroup := routerGroup.Group("/events")
 	{
-		userGroup.GET("/", user.GetUsers)
+		userGroup.GET("/", ctrl.GetEvents)
 	}
 }

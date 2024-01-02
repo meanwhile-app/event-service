@@ -1,4 +1,4 @@
-package server
+package database
 
 import (
 	"context"
@@ -7,12 +7,18 @@ import (
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 
 	"github.com/nuntjw/go-gin-starter/configs"
 )
 
-func ConnectDB() {
+var dbClient *mongo.Client
+
+func ConnectMongoDB() *mongo.Client {
+	if dbClient != nil {
+		log.Println("11111")
+		return dbClient
+	}
+	log.Println("22222")
 	env := configs.GetEnv()
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -25,9 +31,10 @@ func ConnectDB() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	dbClient = client
+	return client
+}
 
-	err = client.Ping(ctx, readpref.Primary())
-	if err != nil {
-		log.Fatal(err)
-	}
+func GetClient() *mongo.Client {
+	return dbClient
 }
