@@ -8,7 +8,7 @@ import (
 
 var appEnv map[string]string
 
-func LoadEnv() {
+func LoadEnv() map[string]string {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal(err)
@@ -19,6 +19,7 @@ func LoadEnv() {
 		log.Fatal(err)
 	}
 	appEnv = env
+	return env
 }
 
 func GetEnv() map[string]string {

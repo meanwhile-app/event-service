@@ -2,13 +2,13 @@ package models
 
 import (
 	"context"
-	"os"
 	"strconv"
 	"time"
 
-	"github.com/nuntjw/go-gin-starter/database"
-	"github.com/nuntjw/go-gin-starter/models/schemas"
-	"github.com/nuntjw/go-gin-starter/types"
+	"github.com/meanwhile-app/event-service/configs"
+	"github.com/meanwhile-app/event-service/databases"
+	"github.com/meanwhile-app/event-service/models/schemas"
+	"github.com/meanwhile-app/event-service/types"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -19,8 +19,9 @@ type EventModel struct {
 }
 
 func NewEventModel() *EventModel {
+	env := configs.GetEnv()
 	return &EventModel{
-		Coll: database.GetClient().Database(os.Getenv("DB_DATABASE")).Collection("events"),
+		Coll: databases.GetMongoDbClient().Database(env["DB_DATABASE"]).Collection("events"),
 	}
 }
 

@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nuntjw/go-gin-starter/models"
-	"github.com/nuntjw/go-gin-starter/types"
+	"github.com/meanwhile-app/event-service/models"
+	"github.com/meanwhile-app/event-service/types"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -55,13 +55,15 @@ func (ctrl *EventController) GetNearbyEvents(c *gin.Context) {
 }
 
 func (ctrl *EventController) InsertEvent(c *gin.Context) {
+	uid := c.MustGet("user_id").(string)
+
 	var reqBody types.InsertEventPayload
 	if err := c.ShouldBindJSON(&reqBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	userId, err := primitive.ObjectIDFromHex("65941000f75468983b3903c8")
+	userId, err := primitive.ObjectIDFromHex(uid)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "insert error",

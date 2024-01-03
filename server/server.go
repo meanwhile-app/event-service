@@ -2,8 +2,8 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/nuntjw/go-gin-starter/configs"
-	"github.com/nuntjw/go-gin-starter/server/routing"
+	"github.com/meanwhile-app/event-service/configs"
+	"github.com/meanwhile-app/event-service/server/routing"
 )
 
 var r *gin.Engine

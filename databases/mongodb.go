@@ -1,4 +1,4 @@
-package database
+package databases
 
 import (
 	"context"
@@ -8,17 +8,15 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/nuntjw/go-gin-starter/configs"
+	"github.com/meanwhile-app/event-service/configs"
 )
 
 var dbClient *mongo.Client
 
 func ConnectMongoDB() *mongo.Client {
 	if dbClient != nil {
-		log.Println("11111")
 		return dbClient
 	}
-	log.Println("22222")
 	env := configs.GetEnv()
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -35,6 +33,6 @@ func ConnectMongoDB() *mongo.Client {
 	return client
 }
 
-func GetClient() *mongo.Client {
+func GetMongoDbClient() *mongo.Client {
 	return dbClient
 }

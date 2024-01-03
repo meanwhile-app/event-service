@@ -1,14 +1,16 @@
 package main
 
 import (
-	"github.com/nuntjw/go-gin-starter/configs"
-	"github.com/nuntjw/go-gin-starter/database"
-	"github.com/nuntjw/go-gin-starter/server"
+	"github.com/gin-gonic/gin"
+	"github.com/meanwhile-app/event-service/configs"
+	"github.com/meanwhile-app/event-service/databases"
+	"github.com/meanwhile-app/event-service/server"
 )
 
 func main() {
-	configs.LoadEnv()
-	database.ConnectMongoDB()
+	env := configs.LoadEnv()
+	gin.SetMode(env["GIN_MODE"])
+	databases.ConnectMongoDB()
 	server.InitRoute()
 	server.Run()
 }

@@ -1,7 +1,7 @@
 package types
 
 import (
-	"github.com/nuntjw/go-gin-starter/models/schemas"
+	"github.com/meanwhile-app/event-service/models/schemas"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

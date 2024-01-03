@@ -2,8 +2,8 @@ package routing
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/nuntjw/go-gin-starter/controllers"
-	"github.com/nuntjw/go-gin-starter/middewares"
+	"github.com/meanwhile-app/event-service/controllers"
+	"github.com/meanwhile-app/event-service/middewares"
 )
 
 func InitUserRoute(routerGroup *gin.RouterGroup) {

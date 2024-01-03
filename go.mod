@@ -1,4 +1,4 @@
-module github.com/nuntjw/go-gin-starter
+module github.com/meanwhile-app/event-service
 
 go 1.21
 
@@ -10,6 +10,7 @@ require (
 require (
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
+	github.com/golang-jwt/jwt/v5 v5.2.0 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/klauspost/compress v1.17.4 // indirect
 	github.com/montanaflynn/stats v0.7.1 // indirect
