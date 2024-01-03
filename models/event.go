@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"errors"
 	"strconv"
 	"time"
 
@@ -80,13 +81,23 @@ func (eventModel *EventModel) mapCursorToEvents(cursor *mongo.Cursor) ([]schemas
 }
 
 func (eventModel *EventModel) InsertOne(payload *types.InsertEventPayload) (*mongo.InsertOneResult, error) {
+	if !payload.ReplyToEventId.IsZero() {
+		findByIdQuery := bson.M{
+			"_id": payload.ReplyToEventId,
+		}
+		result := eventModel.Coll.FindOne(context.TODO(), findByIdQuery)
+		if result.Err() == mongo.ErrNoDocuments {
+			return nil, errors.New("invalid reply_to_event_id")
+		}
+	}
+
 	event := schemas.Event{
-		ID:        primitive.NewObjectID(),
-		Title:     payload.Title,
-		Location:  payload.Location,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-		CreatedBy: payload.CreatedBy,
+		ID:             primitive.NewObjectID(),
+		Title:          payload.Title,
+		Location:       payload.Location,
+		CreatedAt:      time.Now(),
+		CreatedBy:      payload.CreatedBy,
+		ReplyToEventId: payload.ReplyToEventId,
 	}
 	result, err := eventModel.Coll.InsertOne(context.TODO(), event)
 	if err != nil {

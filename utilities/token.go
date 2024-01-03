@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/golang-jwt/jwt/v5"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var secretkey = []byte("meanwhile-jwt-secret")
@@ -33,4 +34,20 @@ func EncodeJwt(clams *jwt.MapClaims) (string, error) {
 	}
 
 	return tokenString, nil
+}
+
+func GetUidFromToken(token string) (primitive.ObjectID, error) {
+	claims, err := DecodeJwt(token)
+
+	if err != nil {
+		return primitive.ObjectID{}, err
+	}
+
+	uid, exists := claims["uid"].(string)
+
+	if !exists {
+		return primitive.ObjectID{}, errors.New("uid not exists")
+	}
+
+	return primitive.ObjectIDFromHex(uid)
 }

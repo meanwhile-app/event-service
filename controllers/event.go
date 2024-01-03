@@ -55,28 +55,22 @@ func (ctrl *EventController) GetNearbyEvents(c *gin.Context) {
 }
 
 func (ctrl *EventController) InsertEvent(c *gin.Context) {
-	uid := c.MustGet("user_id").(string)
+	uid := c.MustGet("user_id").(primitive.ObjectID)
 
 	var reqBody types.InsertEventPayload
 	if err := c.ShouldBindJSON(&reqBody); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	userId, err := primitive.ObjectIDFromHex(uid)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "insert error",
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "bind data error",
 			"error":   err.Error(),
 		})
-		c.Abort()
 		return
 	}
 
 	payload := types.InsertEventPayload{
-		Title:     reqBody.Title,
-		Location:  reqBody.Location,
-		CreatedBy: userId,
+		Title:          reqBody.Title,
+		Location:       reqBody.Location,
+		CreatedBy:      uid,
+		ReplyToEventId: reqBody.ReplyToEventId,
 	}
 
 	result, err := ctrl.eventModel.InsertOne(&payload)

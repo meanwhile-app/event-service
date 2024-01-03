@@ -22,21 +22,17 @@ func Authorize() gin.HandlerFunc {
 		}
 
 		token := strings.Split(authorization, " ")[1]
-
-		claims, err := utilities.DecodeJwt(token)
+		uid, err := utilities.GetUidFromToken(token)
 
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"message": "Unauthorized",
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "insert error",
 				"error":   err.Error(),
 			})
 			c.Abort()
 			return
 		}
-
-		if uid, exists := claims["uid"].(string); exists {
-			c.Set("user_id", uid)
-		}
+		c.Set("user_id", uid)
 
 		c.Next()
 	}
