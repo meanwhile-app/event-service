@@ -13,7 +13,7 @@ func InitRoute() {
 
 	apiV1Group := r.Group("/api/v1")
 	{
-		routing.InitUserRoute(apiV1Group)
+		routing.InitEventRoute(apiV1Group)
 	}
 
 }

@@ -81,7 +81,7 @@ func (eventModel *EventModel) mapCursorToEvents(cursor *mongo.Cursor) ([]schemas
 }
 
 func (eventModel *EventModel) InsertOne(payload *types.InsertEventPayload) (*mongo.InsertOneResult, error) {
-	if !payload.ReplyToEventId.IsZero() {
+	if payload.ReplyToEventId != nil && !payload.ReplyToEventId.IsZero() {
 		findByIdQuery := bson.M{
 			"_id": payload.ReplyToEventId,
 		}

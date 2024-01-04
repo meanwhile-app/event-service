@@ -6,7 +6,7 @@ import (
 	"github.com/meanwhile-app/event-service/middewares"
 )
 
-func InitUserRoute(routerGroup *gin.RouterGroup) {
+func InitEventRoute(routerGroup *gin.RouterGroup) {
 	ctrl := controllers.NewEventController()
 
 	eventGroup := routerGroup.Group("/events", middewares.Authorize())
